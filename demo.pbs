@@ -1,0 +1,24 @@
+#!/bin/sh
+#PBS -N Demo
+#PBS -l select=1:ngpus=1:ncpus=64:mem=500gb
+#PBS -q ai
+#PBS -l walltime=01:00:00
+#PBS -j oe
+#PBS -o log
+#PBS -P 11003552
+
+PBS_O_WORKDIR="/home/users/nus/e0817846"
+cd $PBS_O_WORKDIR || exit $?
+
+[ -d log ] || mkdir log
+
+#load anaconda
+module load anaconda3/2022.10
+
+#Import your environment
+conda env create -n vicuna -f vicuna.yaml
+conda activate vicuna
+
+# Run your script
+cd scratch/NSCC-demo
+bash scripts/main.sh
